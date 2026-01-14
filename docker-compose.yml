@@ -1,0 +1,12 @@
+services:
+  minio:
+    image: minio/minio:latest
+    command: server /data --console-address ":4545"
+    ports:
+      - "9000:9000"   # S3 API
+      - "4545:4545"   # Console Web
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio12345
+    volumes:
+      - ./_minio:/data
