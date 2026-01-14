@@ -1,5 +1,5 @@
 outs:
-- md5: e8b4a11df076d11a4ee6338b1b483f7a
-  size: 78367863
+- md5: 3786e459e1f3f4bcc776236e397ca169
+  size: 58531040
   hash: md5
   path: data.tsv

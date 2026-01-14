@@ -1,31 +1,26 @@
 from zenml import pipeline, step
-from zenml.logger import get_logger
-import logging
-import subprocess
-
-logger = get_logger(__name__)
-
+from model_utils import train_model, TransformerClassifier
+import torch.nn as nn
+import os
 
 @step
-def train_step() -> str:
-    logger.info("Running train_step (executes train.py)")
-    # Run training as a separate process to avoid import-time side effects
-    subprocess.run(["python", "train.py"], check=True)
-    return "checkpoints"
+def prepare_data() -> str:
+    data_path = "data/data.tsv"
+    if not os.path.exists(data_path):
+        raise FileNotFoundError("Data file missing!")
+    return data_path
 
+@step(enable_cache=True)
+def training_step(data_path: str) -> nn.Module:
+    """Trains the model and returns it for ZenML to version."""
+    model = train_model(data_path, epochs=1) 
+    return model
 
 @pipeline
-def training_pipeline():
-    train_step()
-
-
-def main():
-    logging.basicConfig(level=logging.INFO)
-    logger.info("Starting ZenML pipeline for training")
-    pipeline_run = training_pipeline()
-    pipeline_run.run()
-    logger.info("Pipeline run finished")
-
+def political_bias_pipeline():
+    path = prepare_data()
+    training_step(path)
 
 if __name__ == "__main__":
-    main()
+    # Just call the pipeline function
+    political_bias_pipeline()

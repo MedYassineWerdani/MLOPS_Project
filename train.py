@@ -11,10 +11,14 @@ import re
 import string
 from nltk.corpus import stopwords
 import nltk
+import os
 
 
 
 checkpoint_folder = './checkpoints'
+
+# ensure checkpoints directory exists
+os.makedirs(checkpoint_folder, exist_ok=True)
 
 language_model = "FacebookAI/roberta-base"
 tokenizer = AutoTokenizer.from_pretrained(language_model)
