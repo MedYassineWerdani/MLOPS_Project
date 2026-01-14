@@ -1,9 +1,14 @@
 [core]
-    remote = storage
+    remote = minio
 ['remote "storage"']
     url = s3://project-data
     endpointurl = http://localhost:9000
     use_ssl = false
     region = us-east-1
+    access_key_id = minio
+    secret_access_key = minio12345
+['remote "minio"']
+    url = s3://dvc
+    endpointurl = http://localhost:9000
     access_key_id = minio
     secret_access_key = minio12345
